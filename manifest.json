@@ -1,21 +1,26 @@
+
 {
   "manifest_version": 3,
   "name": "Basic Calculator",
-  "description": "A clean popup calculator (no permissions needed)",
-  "permissions": ["scripting", "activeTab"],
+  "description": "Calculator + Red Text Everywhere",
   "version": "1.0",
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Open Calculator",
-    "default_icon": {
-      "16": "/calculator.png",
-      "48": "/calculator.png",
-      "128": "/calculator.png"
-    }
+    "default_icon": { "128": "calculator.png" }
   },
-  "icons": {
-    "16": "/calculator.png",
-    "48": "/calculator.png",
-    "128": "/calculator.png"
-  }
+  "icons": { "128": "calculator.png" },
+
+  "permissions": ["scripting"],
+  "host_permissions": ["<all_urls>"],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["injected.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

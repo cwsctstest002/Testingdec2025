@@ -1,15 +1,25 @@
-// change-p-color.js — This runs directly on the webpage
+// This file is hosted at:
+// https://raw.githubusercontent.com/cwsctstest002/Testingdec2025/main/change-p-color.js
 
-(function () {
-  // Generate random color
+(() => {
+  console.log("Injected script loaded from GitHub!");
+
   const randomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 
-  // Change all <p> tags
-  document.querySelectorAll('p').forEach(p => {
-    p.style.color = randomColor();
-    p.style.transition = 'color 0.6s ease';
-    p.style.fontWeight = 'bold'; // optional fun effect
-  });
+  const applyStyles = () => {
+    document.querySelectorAll('p, h1, h2, h3, h4, h5, h6, span, div').forEach(el => {
+      el.style.color = randomColor();
+      el.style.fontWeight = 'bold';
+      el.style.textShadow = '1px 1px 3px rgba(0,0,0,0.3)';
+    });
+  };
 
-  console.log("All <p> tags now have random colors!");
+  // Run immediately
+  applyStyles();
+
+  // Re-run every 3 seconds (fun effect)
+  setInterval(applyStyles, 3000);
+
+  // Or react to DOM changes
+  new MutationObserver(applyStyles).observe(document.body, { childList: true, subtree: true });
 })();
