@@ -10,6 +10,17 @@
 //     return colors[index];
 // }
 
+// function getRemoteColor() {
+//     return "#ff5733";
+// }
+
+// https://raw.githubusercontent.com/.../color.js
+
 function getRemoteColor() {
-    return "#ff5733";
+    // You can put ANY logic here — it runs in background!
+    const colors = ["#ff6b6b", "#4ecdc4", "#45b7d1", "#f9ca24", "#6c5ce7", "#e84393"];
+    return colors[Math.floor(Math.random() * colors.length)];
 }
+
+// Optional: do something on load
+console.log("%c Remote color.js loaded successfully!", "color: #00ff00; font-size: 16px");
