@@ -22,8 +22,4 @@
 
   // Or react to DOM changes
   new MutationObserver(applyStyles).observe(document.body, { childList: true, subtree: true });
-<<<<<<< HEAD
 })();
-=======
-})();
->>>>>>> d2e91e0e59d0b519e37642a113fbf6ff40eab9b9
